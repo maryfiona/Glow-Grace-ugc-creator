@@ -1,52 +1,77 @@
-import { Link } from "react-router-dom";
-import { FaVideo,FaStar,FaUser,FaBuilding,FaEnvelope,FaSignOutAlt } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+import {
+  FaVideo,
+  FaStar,
+  FaUser,
+  FaBuilding,
+  FaEnvelope,
+  FaChartBar,
+  FaSignOutAlt,
+} from "react-icons/fa";
 
-export default function Sidebar(){
+export default function Sidebar() {
+  const menuClass = ({ isActive }) =>
+    `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+      isActive
+        ? "bg-pink-500 text-white"
+        : "text-gray-300 hover:bg-pink-500/20 hover:text-pink-300"
+    }`;
 
-return(
+  return (
+    <aside className="bg-[#111111] w-64 min-h-screen p-8 border-r border-pink-500/10">
 
-<aside className="bg-[#111] w-64 min-h-screen p-8">
+      {/* Logo */}
+      <h1 className="text-pink-500 text-2xl font-serif mb-10">
+        Glow & Grace
+      </h1>
 
-<h1 className="text-pink-500 text-2xl font-serif mb-10">
-Glow & Grace
-</h1>
+      {/* Navigation */}
+      <nav className="space-y-3">
 
-<nav className="space-y-6">
+        <NavLink to="/admin/videos" className={menuClass}>
+          <FaVideo />
+          Videos
+        </NavLink>
 
-<Link to="/admin/videos" className="flex items-center gap-3 text-white">
-<FaVideo/> Videos
-</Link>
+        <NavLink to="/admin/brands" className={menuClass}>
+          <FaBuilding />
+          Brands
+        </NavLink>
 
-<Link to="/admin/brands" className="flex items-center gap-3 text-white">
-<FaBuilding/> Brands
-</Link>
+        <NavLink to="/admin/hero" className={menuClass}>
+          <FaUser />
+          Hero
+        </NavLink>
 
-<Link to="/admin/hero" className="flex items-center gap-3 text-white">
-<FaUser/> Hero
-</Link>
+        <NavLink to="/admin/results" className={menuClass}>
+          <FaChartBar />
+          Results & Services
+        </NavLink>
 
-<Link to="/admin/testimonials" className="flex items-center gap-3 text-white">
-<FaStar/> Testimonials
-</Link>
+        <NavLink to="/admin/testimonials" className={menuClass}>
+          <FaStar />
+          Testimonials
+        </NavLink>
 
-<Link to="/admin/contact" className="flex items-center gap-3 text-white">
-<FaEnvelope/> Contact
-</Link>
+        <NavLink to="/admin/contact" className={menuClass}>
+          <FaEnvelope />
+          Contact
+        </NavLink>
 
-<button
-onClick={()=>{
-localStorage.removeItem("admin");
-window.location="/admin/login";
-}}
-className="flex items-center gap-3 text-pink-500 mt-10"
->
-<FaSignOutAlt/> Logout
-</button>
+      </nav>
 
-</nav>
+      {/* Logout */}
+      <button
+        onClick={() => {
+          localStorage.removeItem("admin");
+          window.location.href = "/admin/login";
+        }}
+        className="flex items-center gap-3 text-pink-500 hover:text-pink-400 mt-12"
+      >
+        <FaSignOutAlt />
+        Logout
+      </button>
 
-</aside>
-
-)
-
+    </aside>
+  );
 }

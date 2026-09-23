@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { supabase } from "../supabase";
+
 import {
   FaHeart,
   FaRegCommentDots,
@@ -12,61 +15,110 @@ import {
 } from "react-icons/fa";
 
 export default function ResultServices() {
+  const [content, setContent] = useState(null);
+
+  useEffect(() => {
+    getContent();
+
+    // Realtime update when admin edits
+    const channel = supabase
+      .channel("result-services-channel")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "result_services",
+        },
+        () => {
+          getContent();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  async function getContent() {
+    const { data, error } = await supabase
+      .from("result_services")
+      .select("*")
+      .limit(1)
+      .single();
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    setContent(data);
+  }
+
   const results = [
     {
       icon: <FaHeart />,
-      number: "120K",
+      number: content?.likes || "120K",
       label: "LIKES",
     },
     {
       icon: <FaRegCommentDots />,
-      number: "8.4K",
+      number: content?.comments || "8.4K",
       label: "COMMENTS",
     },
     {
       icon: <FaPaperPlane />,
-      number: "15K",
+      number: content?.shares || "15K",
       label: "SHARES",
     },
     {
       icon: <FaBookmark />,
-      number: "22K",
+      number: content?.saves || "22K",
       label: "SAVES",
     },
     {
       icon: <FaEye />,
-      number: "3.1M",
+      number: content?.views || "3.1M",
       label: "VIEWS",
     },
     {
-      
-  icon: <FaArrowUp />,
-  number: "+38%",
-  label: "AVG. GROWTH",
-
+      icon: <FaArrowUp />,
+      number: content?.growth || "+38%",
+      label: "AVG. GROWTH",
     },
   ];
 
   const services = [
     {
       icon: <FaVideo />,
-      title: "UGC Videos",
+      title: content?.service1 || "UGC Videos",
       text: "High-converting TikTok, Reels and short-form content for beauty and lifestyle brands.",
     },
     {
       icon: <FaCamera />,
-      title: "Product Photography",
+      title: content?.service2 || "Product Photography",
       text: "Luxury product photos, flat lays and aesthetic lifestyle photography for campaigns.",
     },
     {
       icon: <FaInstagram />,
-      title: "TikTok & Reels Content",
+      title: content?.service3 || "Creative Strategy",
       text: "Creative concepts, voiceovers, tutorials, reviews and trending content for social media.",
     },
     {
       icon: <FaCalendarAlt />,
-      title: "Monthly Content Packages",
+      title: content?.service4 || "Monthly Content Packages",
       text: "Consistent content creation for brands that need weekly or monthly UGC deliverables.",
+    },
+    {
+      icon: <FaVideo />,
+      title: content?.service5 || "Voiceover",
+      text: "Authentic voiceovers, product demonstrations and storytelling videos for beauty and lifestyle campaigns.",
+    },
+    {
+      icon: <FaCamera />,
+      title: content?.service6 || "Brand Content",
+      text: "Lifestyle content designed to build trust, increase engagement and convert viewers into customers.",
     },
   ];
 
@@ -87,9 +139,8 @@ export default function ResultServices() {
           Numbers from recent campaigns and the ways we can work together.
         </p>
 
-        {/* RESULTS CARDS */}
+        {/* RESULT CARDS */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-
           {results.map((item, index) => (
             <div
               key={index}
@@ -108,12 +159,10 @@ export default function ResultServices() {
               </p>
             </div>
           ))}
-
         </div>
 
         {/* SERVICES */}
         <div className="mt-20">
-
           <p className="uppercase tracking-[5px] text-pink-400 text-xs sm:text-sm mb-3">
             Services
           </p>
@@ -122,8 +171,7 @@ export default function ResultServices() {
             How we can work together
           </h3>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {services.map((service, index) => (
               <div
                 key={index}
@@ -146,9 +194,7 @@ export default function ResultServices() {
                 </p>
               </div>
             ))}
-
           </div>
-
         </div>
 
       </div>

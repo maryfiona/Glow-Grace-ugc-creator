@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import BackButton from "../admin/BackButton";
 
 export default function BrandsEditor() {
   const [brands, setBrands] = useState([]);
   const [brandName, setBrandName] = useState("");
   const [brandLogo, setBrandLogo] = useState("");
+  
 
   // Load saved brands
   useEffect(() => {
@@ -56,6 +58,7 @@ export default function BrandsEditor() {
 
   return (
     <div className="min-h-screen bg-black text-white py-12 px-5">
+      <BackButton/>
 
       <div className="max-w-2xl mx-auto">
 
