@@ -4,6 +4,7 @@ import Hero from "../components/Hero.jsx";
 import Testimonials from "../components/Testimonials.jsx";
 import About from "../components/About.jsx";
 import Contact from "../components/Contact.jsx";
+import ResultsServices from "../components/ResultServices.jsx";
 
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
       <Brands />
       <Videos />
       <Testimonials />
+      <ResultsServices/>
       <Contact />
     </>
   );

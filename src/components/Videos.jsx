@@ -19,67 +19,68 @@ export default function Videos() {
     }
   }
 
+  // Always show at least 4 cards
   const totalCards = Math.max(videos.length, 4);
 
   return (
     <section
-      id="videos"
-      className="bg-black text-white py-24 px-6 md:px-10"
+      id="portfolio"
+      className="bg-black text-white py-20 px-4 sm:px-6 lg:px-12"
     >
-      <p className="uppercase tracking-[6px] text-pink-500 mb-3">
-      Videos Project
+      {/* Heading */}
+      <p className="uppercase tracking-[5px] text-pink-500 text-xs sm:text-sm mb-3">
+      Video Projects
       </p>
 
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-14">
-        {/* <h2 className="text-5xl md:text-7xl font-serif leading-none">
-          Made to move.
-        </h2> */}
+      
 
-        <p className="text-gray-400 max-w-sm">
-          A selection of short-form concepts designed for attention, trust and action.
-        </p>
-      </div>
+      <p className="text-gray-400 max-w-xl text-sm sm:text-base mb-12">
+        A selection of short-form concepts designed for attention, trust and
+        action.
+      </p>
 
-      <div className="flex gap-7 overflow-x-auto pb-6 no-scrollbar">
-
+      {/* Responsive Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         {Array.from({ length: totalCards }).map((_, index) => {
           const item = videos[index];
 
           return (
-            <div key={index} className="min-w-[230px]">
+            <div key={index} className="w-full">
 
               {/* Phone Frame */}
-              <div className="rounded-[38px] bg-[#26264D] p-[5px] shadow-xl">
+              <div className="bg-[#24244A] p-[4px] rounded-[28px] shadow-xl">
 
-                <div className="relative rounded-[34px] overflow-hidden bg-[#05061C] h-[500px]">
+                <div className="relative bg-[#05061C] rounded-[24px] overflow-hidden aspect-[9/16]">
 
                   {/* Speaker */}
-                  <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 w-20 h-2 rounded-full bg-gray-500"></div>
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 rounded-full bg-gray-500 z-20"></div>
 
                   {item ? (
                     <video
                       src={item.video_url}
                       controls
                       playsInline
+                      preload="metadata"
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-[#05061C]" />
+                    <div className="w-full h-full bg-[#05061C] flex items-center justify-center">
+                      <p className="text-gray-600 text-[10px] uppercase tracking-[2px]">
+                        Coming Soon
+                      </p>
+                    </div>
                   )}
-
                 </div>
               </div>
 
-              <div className="mt-4 text-center">
-                <p className="uppercase tracking-[2px] text-sm font-semibold">
-                  {item ? item.title : "Coming Soon"}
-                </p>
-              </div>
+              {/* Title */}
+              <p className="mt-3 text-center uppercase text-[11px] sm:text-xs font-semibold tracking-[2px]">
+                {item ? item.title : "Coming Soon"}
+              </p>
 
             </div>
           );
         })}
-
       </div>
     </section>
   );
